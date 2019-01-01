@@ -1,6 +1,19 @@
 import UIKit
 
 
+func randomize(array: inout [Int], capacity: Int) {
+	
+	array.removeAll()
+	
+	for _ in 0..<capacity {
+		
+		let random = Int.random(in: 0...100)
+		array.append(random)
+	}
+	
+}
+
+
 // selection sort
 
 func selectionSort(array: [Int]) -> [Int] {
@@ -48,7 +61,8 @@ func swap(array: inout [Int], start: Int, end: Int) {
 
 }
 
-var array = [3, 56, 76, 4, 46, 21, 2, 5, 18, 754, 54, 23, 6]
+var array: [Int] = []
+randomize(array: &array, capacity: 10)
 let sorted = selectionSort(array: array)
 
 // Merge sort
@@ -71,7 +85,7 @@ func merge (array: inout [Int], start: Int, middle: Int, end: Int) {
 			lowerHalfIndex += 1
 		}
 		else {
-			array[masterIndex] = upperHalfIndex
+			array[masterIndex] = upperHalfValue
 			upperHalfIndex += 1
 		}
 		
@@ -109,36 +123,34 @@ func mergeSort (array: inout [Int], start: Int, end: Int) {
 	}
 }
 
+randomize(array: &array, capacity: 3)
 
 mergeSort(array: &array, start: 0, end: array.count - 1)
 
-print("Is this array sorted? \(array)")
 
 // insertion sort
 
 func insert(array: inout [Int], rightIndex: Int, value: Int) {
 	
+	print("evaluating element: \(value), index: \(rightIndex)")
 	var index = rightIndex
 	
 	for i in (0...rightIndex).reversed() {
-		print("evaluating: \(i)")
+		
 		index = i
-		if array[i] < value {
+		let incoming = array[i]
+		
+		if incoming > value {
+			// shift
+			array[i + 1] = array[i]
+			array[index] = value
+		}
+		else {
+			// bail
 			break
 		}
-		
-		array[i + 1] = array[i]
 	}
-	
-	array[index+1] = value
-	
 }
-
-array = [1, 2, 7, 8, 6, 3, 8]
-
-insert(array: &array, rightIndex: 3, value: 6)
-
-print(array)
 
 func insertionSort(array: inout [Int]) {
 	for (index, element) in array.enumerated() {
@@ -149,4 +161,84 @@ func insertionSort(array: inout [Int]) {
 	}
 }
 
+randomize(array: &array, capacity: 3)
 insertionSort(array: &array)
+
+
+// Heap sort
+
+
+struct Heap<Element: Comparable> {
+	
+	var buffer: [Element] = []
+	
+	init(elements: [Element]) {
+		
+		self.buffer = elements
+		
+		// here we need to reshuffle the array to represent a max heap
+		let startIndex = (buffer.count / 2) - 1
+		
+		for i in (0...startIndex).reversed() {
+			heapify(size: startIndex, index: i)
+		}
+		
+		for i in (0...(buffer.count - 1)).reversed() {
+			
+			let temp = buffer[0]
+			buffer[0] = buffer[i]
+			buffer[i] = temp
+			
+			heapify(size: i, index: 0)
+			
+		}
+	}
+	
+	mutating func heapify(size: Int, index: Int) {
+		
+		var root = index
+		let leftChild = left(i: index)
+		let rightChild  = right(i: index)
+		
+		
+		// if left child is larger than root
+		if leftChild < size && buffer[leftChild] > buffer[root] {
+			root = leftChild
+		}
+		
+		// if right child is larger than root
+		if rightChild < size && buffer[rightChild] > buffer[root] {
+			root = rightChild
+		}
+		
+		//if reshuffling needs to happen
+		if root != index {
+			let temp = buffer[index]
+			buffer[index] = buffer[root]
+			buffer[root] = temp
+			
+			// recursively heapify affected sub-tree
+			heapify(size: size, index: root)
+			
+		}
+	}
+	
+	
+	func left(i: Int) -> Int {
+		return (2 * i) + 1
+		
+	}
+	
+	func right(i: Int) -> Int {
+		return (2 * i) + 2
+	}
+	
+	func parent(i: Int) -> Int {
+		return (i - 1) / 2
+	}
+}
+
+randomize(array: &array, capacity: 100)
+let heap = Heap(elements: array)
+
+let result = heap.buffer
