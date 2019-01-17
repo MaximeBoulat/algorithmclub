@@ -242,3 +242,65 @@ randomize(array: &array, capacity: 100)
 let heap = Heap(elements: array)
 
 let result = heap.buffer
+
+//
+
+var map = [1 : ["a", "b", "c"],
+2 : ["d", "e"],
+3 : ["f", "g", "h", "i"]]
+
+var input = [3, 2, 1]
+
+
+func permutations(input: inout[Int], incomingResult: inout[String], index: Int, map: [Int: [String]]) {
+    
+    print("evaluating incoming result: \(incomingResult) index: \(index), input: \(input)")
+    
+    guard index < input.count else {
+        
+        return
+        
+    }
+    
+    let currentDigit = input[index]
+    
+    var outgoingResult: [String] = []
+    
+    if incomingResult.count == 0 {
+        
+        for letter in map[currentDigit]! {
+            outgoingResult.append(letter)
+        }
+    }
+    else {
+        for existing in incomingResult {
+            
+            print("Evaluating existing: \(existing)")
+            
+            for letter in map[currentDigit]! {
+                print("evaluating result")
+                outgoingResult.append(existing + letter)
+            }
+        }
+    }
+    
+
+    
+    permutations(input: &input, incomingResult: &outgoingResult, index: index + 1, map: map)
+
+    
+}
+
+var permutations: [String] = []
+
+
+permutations(input: &input, incomingResult: &permutations, index: 0, map: map)
+
+print("Result = \(permutations)")
+
+
+
+
+
+
+
