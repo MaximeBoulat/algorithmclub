@@ -58,7 +58,7 @@ func swap(array: inout [Int], start: Int, end: Int) {
 	let store = array[start]
 	array[start] = array[end]
 	array[end] = store
-
+	
 }
 
 var array: [Int] = []
@@ -114,7 +114,7 @@ func merge (array: inout [Int], start: Int, middle: Int, end: Int) {
 func mergeSort (array: inout [Int], start: Int, end: Int) {
 	
 	if end > start {
-	
+		
 		let half = (end - start) / 2 + start
 		mergeSort(array: &array, start: start, end: half)
 		mergeSort(array: &array, start: half + 1, end: end)
@@ -243,63 +243,41 @@ let heap = Heap(elements: array)
 
 let result = heap.buffer
 
-//
+// String permutations
 
 var map = [1 : ["a", "b", "c"],
-2 : ["d", "e"],
-3 : ["f", "g", "h", "i"]]
+		   2 : ["d", "e"],
+		   3 : ["f", "g", "h", "i"]]
 
 var input = [3, 2, 1]
 
-
-func permutations(input: inout[Int], incomingResult: inout[String], index: Int, map: [Int: [String]]) {
-    
-    print("evaluating incoming result: \(incomingResult) index: \(index), input: \(input)")
-    
-    guard index < input.count else {
-        
-        return
-        
-    }
-    
-    let currentDigit = input[index]
-    
-    var outgoingResult: [String] = []
-    
-    if incomingResult.count == 0 {
-        
-        for letter in map[currentDigit]! {
-            outgoingResult.append(letter)
-        }
-    }
-    else {
-        for existing in incomingResult {
-            
-            print("Evaluating existing: \(existing)")
-            
-            for letter in map[currentDigit]! {
-                print("evaluating result")
-                outgoingResult.append(existing + letter)
-            }
-        }
-    }
-    
-
-    
-    permutations(input: &input, incomingResult: &outgoingResult, index: index + 1, map: map)
-
-    
+efvwoghjdlsjbdjkwbbjku
+func permutations(input: [Int], currentResult: [String], map: [Int: [String]]) -> [String] {
+	
+	switch input.count {
+	case 0:
+		return currentResult
+	default:
+		
+		switch currentResult.count {
+		case 0:
+			return permutations(input: Array(input.dropFirst()), currentResult: map[input[0]]!, map: map)
+		default:
+			var outgoingResult: [String] = []
+			for existing in currentResult {
+				
+				for letter in map[input[0]]! {
+					outgoingResult.append(existing + letter)
+				}
+			}
+			return permutations(input: Array(input.dropFirst()), currentResult: outgoingResult, map: map)
+		}
+	}
 }
 
-var permutations: [String] = []
+var perms = permutations(input: input, currentResult: [], map: map)
 
-
-permutations(input: &input, incomingResult: &permutations, index: 0, map: map)
-
-print("Result = \(permutations)")
-
-
-
+print("Result = \(perms)")
 
 
 
