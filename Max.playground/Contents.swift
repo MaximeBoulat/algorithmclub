@@ -251,7 +251,6 @@ var map = [1 : ["a", "b", "c"],
 
 var input = [3, 2, 1]
 
-efvwoghjdlsjbdjkwbbjku
 func permutations(input: [Int], currentResult: [String], map: [Int: [String]]) -> [String] {
 	
 	switch input.count {
