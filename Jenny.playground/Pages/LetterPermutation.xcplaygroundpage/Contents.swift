@@ -47,5 +47,5 @@ func letterCombination(fromDigits digits: [Int]) -> [String] {
     return result
 }
 
-let result = letterCombination(fromDigits: [2, 3, 4])
+let result = letterCombination(fromDigits: [2, 3, 7])
 print(result.count)
