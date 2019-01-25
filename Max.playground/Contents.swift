@@ -279,5 +279,21 @@ var perms = permutations(input: input, currentResult: [], map: map)
 print("Result = \(perms)")
 
 
+// Reverse int
+
+func reverse(existing: Int, input: Int) -> Int {
+	
+	let multiplier = input / 10
+	let remainder = input % 10
+	let outgoing = (10 * existing) + remainder
+	
+	if multiplier > 0 {
+		return reverse(existing: outgoing, input: multiplier)
+	} else {
+		return outgoing
+	}
+}
+
+var result1 = reverse(existing: 0, input: 8758486438759)
 
 
