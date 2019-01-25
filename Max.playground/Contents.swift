@@ -297,3 +297,33 @@ func reverse(existing: Int, input: Int) -> Int {
 var result1 = reverse(existing: 0, input: 8758486438759)
 
 
+// divide and conquer
+
+
+func reverse2(input: Int) -> (shift: Int, conquered: Int) {
+	
+	// recursion trap
+	guard input / 10 > 0 else {
+		return (1, input)
+	}
+	
+	// extract
+	let extracted = input % 10
+	
+	// reduce problem size
+	let reduced = input / 10
+	
+	// recursively conquer
+	let recurse = reverse2(input: reduced)
+	
+	// merge
+	let shift = (pow(10, recurse.shift) as NSDecimalNumber).intValue
+	let result = (extracted * shift) + recurse.conquered
+	
+	return (recurse.shift + 1, result)
+
+}
+
+var result2 = reverse2(input: 98682369)
+
+
