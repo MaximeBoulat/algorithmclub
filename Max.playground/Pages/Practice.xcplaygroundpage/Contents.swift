@@ -196,6 +196,10 @@ var longestRangeFittingCriteria = result.sorted {
 	$0.count > $1.count
 }.first
 
+var scrubbed = longestRangeFittingCriteria!.map{
+	$0.value
+	
+}
 
-print("Answer is: \(longestRangeFittingCriteria!)")
+print("Answer is: \(scrubbed)")
 
